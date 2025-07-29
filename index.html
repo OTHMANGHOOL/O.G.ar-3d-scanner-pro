@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>O.G. AR 3D Scanner Pro</title>
+  <meta name="description" content="Scan real-world objects in 3D using AR technology">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#2196f3">
+  <link rel="icon" type="image/png" href="./images/Icon.jpg">
+  <link rel="apple-touch-icon" href="./images/Icon.jpg">
+  <link rel="stylesheet" href="./css/styles.css">
+  
+  <script type="module" src="./js/main.js" defer></script>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="./images/Logo.jpg" alt="AR Scanner Pro Logo" class="logo">
+      <h1 data-i18n="appTitle">O.G. AR 3D Scanner Pro</h1>
+    </div>
+    <div class="controls">
+      <button id="langToggle" aria-label="Change Language" title="Change Language">
+        <span data-i18n="language">EN</span>
+      </button>
+      <button id="themeToggle" aria-label="Toggle Dark Mode" title="Toggle Dark Mode">
+        <span>🌓</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <div id="scanner-container" class="view active">
+      <div class="placeholder" data-i18n="scannerPlaceholder">AR Scanner loading...</div>
+      <div id="ar-overlay">
+        <button id="captureBtn" class="floating-btn primary" data-i18n="capture">Capture</button>
+      </div>
+    </div>
+
+    <div id="gallery-container" class="view">
+      <h2 data-i18n="galleryTitle">Your 3D Models</h2>
+      <div id="models-grid" class="grid-container"></div>
+      <div class="placeholder" data-i18n="emptyGallery">No saved models yet</div>
+    </div>
+  </main>
+
+  <nav>
+    <button id="scannerNav" class="nav-btn active" data-i18n="scanner">Scanner</button>
+    <button id="galleryNav" class="nav-btn" data-i18n="gallery">Gallery</button>
+  </nav>
+
+  <div id="model-viewer-modal" class="modal">
+    <div class="modal-content">
+      <button class="close-btn">&times;</button>
+      <h3 data-i18n="viewerTitle">3D Model Viewer</h3>
+      <div id="model-container"></div>
+      <div class="actions">
+        <button id="shareBtn" data-i18n="share">Share</button>
+        <button id="downloadBtn" data-i18n="download">Download</button>
+        <button id="deleteBtn" data-i18n="delete">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Service Worker Registration with offline fallback
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(reg => console.log('Service worker registered:', reg.scope))
+          .catch(err => {
+            console.error('Service worker registration failed:', err);
+            const offlineWarning = document.createElement('div');
+            offlineWarning.className = 'offline-warning';
+            offlineWarning.textContent = 'Some features may not work offline.';
+            document.body.prepend(offlineWarning);
+          });
+      });
+    }
+  </script>
+</body>
+</html>
